@@ -1,0 +1,11 @@
+extends ../layouts/main.pug
+block content
+  .container
+    header
+      h1= movie.title
+
+      small= movie.status.toLowerCase()
+
+    div
+      = movie.director || "We are looking for the director..."
+    img(src=movie.poster)

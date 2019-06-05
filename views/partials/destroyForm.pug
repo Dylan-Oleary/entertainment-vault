@@ -1,0 +1,4 @@
+mixin destroyForm(movie)
+    form.destroy(action=`/movies/destroy`, method="POST", onsubmit=`return confirm("Are you sure you want to delete this movie?")`)
+        input(type="hidden", name="id", value=movie.id)
+        input(type="submit", value="delete")

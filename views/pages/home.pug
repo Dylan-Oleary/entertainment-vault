@@ -1,0 +1,13 @@
+extends ../layouts/main.pug
+
+block globals
+  - title = "Movies"
+
+block content
+
+  header.ui.container
+    h1
+      = title
+    p This application allows the user to track and rate movies they have watched
+    p Upon entering the title of the movie the application will shoot back with some relevant information about the film using the TMDB API 
+

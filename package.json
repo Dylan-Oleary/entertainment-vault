@@ -1,0 +1,24 @@
+{
+  "name": "comp2068-lab02",
+  "version": "1.0.0",
+  "description": "Lab 2 - CRUD",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon"
+  },
+  "author": "Dylan O'Leary",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.1",
+    "mongoose": "^5.5.12",
+    "pug": "^2.0.3"
+  }
+}

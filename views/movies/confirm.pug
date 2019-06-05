@@ -1,0 +1,10 @@
+extends ../layouts/main.pug
+include ../partials/movieCard.pug
+
+block content
+    .container
+        header
+            h1 Are any of these what you were looking for?
+
+        each movie in movies
+            +movieCard(movie)

@@ -1,0 +1,10 @@
+extends ../layouts/main.pug
+include ../partials/form.pug
+
+block content
+  .container
+    header
+      h1 New Movie
+
+    div
+      +form(movie)

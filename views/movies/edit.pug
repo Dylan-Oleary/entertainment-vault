@@ -1,0 +1,10 @@
+extends ../layouts/main.pug
+include ../partials/movieCard.pug
+
+block content
+    .ui.container
+        header
+            h1= `Edit ${movie.title}`
+        
+        div
+            +movieCard(movie)

@@ -1,0 +1,30 @@
+mixin form(movie)
+    .ui.container
+        form.ui.big.form(action=(movie ? "/movies/update" : "/movies/confirm"), method="POST")
+            if movie
+                input(type="hidden", name="id", value=movie.id)
+
+            h4.ui.dividing.header Enter Information
+            .required.field
+                label Title
+                .field
+                    input(type="text" name="movie[title]", required,  autocomplete="off", value=(movie ? movie.title : null))
+
+            .required.field
+                label Rate The Movie
+                select.ui.fluid.dropdown(name="movie[rating]")
+                    each rating in ["Choose Rating",1,2,3,4,5]
+                        if movie
+                            option(value=rating, selected=(movie.rating === rating ? "selected" : null))
+                                = rating
+                        else 
+                            option(value=rating, selected=(rating === "Choose Rating" ? "selected" : null))
+                                = rating   
+
+            .form-group
+                label Comments
+                textarea.form-control(name="movie[comments]")
+                    = movie ? movie.director : null
+            
+            .form-group
+                button.btn.btn-dark(type="submit") Submit

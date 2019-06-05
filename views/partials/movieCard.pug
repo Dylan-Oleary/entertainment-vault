@@ -1,0 +1,31 @@
+mixin movieCard(movie)
+    - const poster = `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+    - const releaseYear = movie.release_date.substring(0,4)
+    .ui.container
+        .ui.celled.grid
+            .row
+                .ui.six.wide.column
+                    img.ui.fluid.image(src=poster)
+                .ten.wide.column
+                    h2= `${movie.title} (${releaseYear})`
+                    p= movie.overview
+                    form(action=(movie.status ? "/movies/update" : "/movies"), method="POST")
+                        if movie.status
+                            input(type="hidden", name="id", value=movie.id)
+
+                        input(type="hidden" name="movie[title]", required, value=(movie.title))
+                        input(type="hidden" name="movie[poster_path]", required, value=(movie.poster_path))
+                        input(type="hidden" name="movie[release_date]", required, value=(movie.release_date))
+                        input(type="hidden" name="movie[overview]", required, value=(movie.overview))
+                        .field
+                            label Rate The Movie
+                            select.ui.fluid.dropdown(name="movie[rating]")
+                                each rating in [0,1,2,3,4,5]
+                                    if movie.status
+                                        option(value=rating, selected=(rating === movie.rating ? "selected" : null))
+                                            = rating === 0 ? "Choose Rating" : rating
+                                    else
+                                        option(value=rating, selected=(rating === 0 ? "selected" : null))
+                                            = rating === 0 ? "Choose Rating" : rating
+
+                        button(type="submit") Submit
