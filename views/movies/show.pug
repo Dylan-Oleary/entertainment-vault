@@ -1,11 +1,33 @@
 extends ../layouts/main.pug
+include ../partials/actionButton.pug
+include ../partials/destroyForm.pug
+
 block content
-  .container
-    header
-      h1= movie.title
-
-      small= movie.status.toLowerCase()
-
-    div
-      = movie.director || "We are looking for the director..."
-    img(src=movie.poster)
+  - const poster = `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+  - const backdropPoster = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+  - const releaseYear = movie.release_date.substring(0,4)
+  
+  .container-fluid
+    .jumbo(style=`background-image: url(${backdropPoster}); background-size: cover;`)
+      .jumbo-content
+        .jumbo-poster
+          img.show-poster(src=poster)
+        .jumbo-info
+          .jumbo-info-header
+            h1= `${movie.title} (${releaseYear})`
+            h5
+              if movie.genres
+                each genre in movie.genres
+                  span= genre
+              span= ` | ${movie.runtime} minutes`
+          .jumbo-control-buttons
+            +actionButton(movie, user, "rated")
+            +actionButton(movie, user, "watchlist")
+            +actionButton(movie, user, "favourites")
+            if movie.status
+              +destroyForm(movie)
+          .jumbo-info-body
+            h3 Synopsis
+            p= movie.overview
+            h3 Director
+            p= movie.crew[0].name

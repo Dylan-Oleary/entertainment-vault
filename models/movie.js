@@ -2,30 +2,66 @@ const mongoose = require("mongoose");
 
 const MovieSchema = new mongoose.Schema (
     {
-        title: {
+        backdrop_path: {
             type: String,
-            required: true
+            required: false
         },
-        rating: {
+        budget: {
             type: Number,
+            required: false
+        },
+        cast: {
+            type: Array,
+            required: false
+        },
+        crew: {
+            type: Array,
+            required: false
+        },
+        genres: {
+            type: Array,
+            require: false
+        },
+        overview: {
+            type: String,
             required: false
         },
         poster_path: {
             type: String,
             required: false
         },
+        production_companies: {
+            type: Array,
+            required: false
+        },
+        // rating: {
+        //     type: Number,
+        //     required: false
+        // },
         release_date: {
             type: String,
             required: false
         },
-        overview: {
+        runtime: {
+            type: Number,
+            required: false
+        },
+        // status: {
+        //     type: String,
+        //     enum: ["WATCHLIST", "WATCHED"],
+        //     default: "WATCHLIST"
+        // },
+        tagline: {
             type: String,
             required: false
         },
-        status: {
+        title: {
             type: String,
-            enum: ["DRAFT", "PUBLISHED"],
-            default: "DRAFT"
+            required: true
+        },
+        tmdb_id: {
+            type: Number,
+            required: true
         }
     },
     {
@@ -33,16 +69,22 @@ const MovieSchema = new mongoose.Schema (
     }
 );
 
-MovieSchema.query.drafts = function(){
+MovieSchema.query.watchList = function(){
     return this.where({
-        status: "DRAFT"
+        on_watchlist: true
     });
 };
 
-MovieSchema.query.published = function(){
+MovieSchema.query.rated = function(){
     return this.where({
-        status: "PUBLISHED"
-    });
-};
+        rating: {$gt: 0}
+    })
+}
+
+MovieSchema.query.favourites = function(){
+    return this.where({
+        on_favourite_list: true
+    })
+}
 
 module.exports = mongoose.model("Movie", MovieSchema);

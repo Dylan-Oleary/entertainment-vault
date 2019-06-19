@@ -1,8 +1,25 @@
+include ./search.pug
+
 mixin nav
-    ul.ui.secondary.pointing.menu
-        li.item
-            a(href='/') Home
-        li.item
-            a(href='/movies') Movies
-        li.item
-            a(href='/search') Search For A Movie
+    #NavBar
+        .ui.secondary.menu
+            .ui.container.grid
+                .row
+                    a.item(href='/') Home
+                    if isAuthenticated
+                        .ui.dropdown.item
+                            span.text Movies
+                            i.dropdown.icon
+                            .menu
+                                a.item(href="/movies") All Movies
+                                a.item(href="/movies/watchlist") My Watch List
+                                a.item(href="/movies/rated") Rated
+                                a.item(href="/movies/favourites") Favourites
+                    if !isAuthenticated
+                        a.item(href="/users/new") Register
+                        a.item(href="/login") Login
+                    if isAuthenticated
+                        form(action="/logout", method="POST")
+                            input.item(type="submit", value="Logout")
+                    .item.right.floated.ui.eight.wide.column
+                        +search

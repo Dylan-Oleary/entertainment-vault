@@ -1,11 +1,4 @@
 mixin search
-    .ui.container
-        form.ui.big.form(action=("/movies/confirm"), method="POST")
-            h4.ui.dividing.header Search
-            .required.field
-                label Enter Search
-                .field
-                    input(type="text" name="movie[title]", required,  autocomplete="off")
-            
-            .form-group
-                button.btn.btn-dark(type="submit") Submit
+    form.ui.icon.input(action="/movies/confirm", method="POST")
+        input.prompt(type="text" name="movie[title]", required, placeholder="Search Movies" autocomplete="off")
+        i.search.icon

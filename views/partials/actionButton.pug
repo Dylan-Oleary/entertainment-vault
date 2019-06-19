@@ -1,0 +1,37 @@
+mixin actionButton(movie, user, route)
+    form.updateMenu(action=(`/users/${route}`), method="POST")
+        input(type="hidden", name="movie[id]", value=`${movie._id}`)
+        input(type="hidden", name="movie[title]", value=`${movie.title}`)
+        if route === "watchlist"
+            if user.onWatchList === true
+                button.ui.labeled.icon.button.medium.blue(type="submit")
+                    i.bookmark.icon
+                    span WatchList                
+            else
+                button.ui.labeled.icon.button.medium.blue(type="submit")
+                    i.bookmark.outline.icon
+                    span WatchList
+        if route === "rated"
+            button.ui.labeled.icon.button.medium.yellow.rating-toggle.inactive(type="button")
+                i.star.icon
+                span Rate
+            .rating-selector
+                select.ui.fluid.dropdown.hide(name="movie[rating]")
+                    each rating in [0,1,2,3,4,5]
+                        option(value=rating, selected=(user.onRated.rating && user.onRated.rating === rating ? "selected" : null))
+                            = rating
+                #UserRatingScale.ui.star.rating.massive(data-rating=`${user.onRated.rating ? user.onRated.rating : 0}`, data-max-rating="5")
+                .rating-buttons
+                    button.ui.icon.button.tiny.rating-submit.hide(type="submit") 
+                        span Save
+                    button.ui.icon.button.tiny.clear-rating.hide(type="button") 
+                        span Clear Rating
+        if route === "favourites"
+            if user.onFavouritesList === true
+                button.ui.labeled.icon.button.medium.pink(type="submit")
+                    i.heart.icon
+                    span Favourite
+            else
+                button.ui.labeled.icon.button.medium.pink(type="submit")
+                    i.heart.outline.icon
+                    span Favourite

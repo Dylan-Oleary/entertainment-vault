@@ -1,0 +1,15 @@
+extends ../layouts/main.pug
+include ../partials/search.pug
+
+block globals
+  - title = "Woops!"
+
+block content
+
+  header.ui.container
+    h1
+      = title
+    p= message 
+
+    +search
+

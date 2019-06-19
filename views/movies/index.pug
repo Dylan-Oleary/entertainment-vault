@@ -1,5 +1,6 @@
 extends ../layouts/main.pug
 include ../partials/destroyForm.pug
+include ../partials/actionButton.pug
 
 block content
   .ui.container
@@ -24,7 +25,6 @@ block content
               td
                 .ui.heart.rating(data-rating=movie.rating, data-max-rating="5")
               td
-                a(href=`/movies/${movie.id}/edit`) Edit
-                  = " | "
-                  +destroyForm(movie)
+                +actionButton(movie, route)
+                +destroyForm(movie)
 

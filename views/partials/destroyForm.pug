@@ -1,4 +1,6 @@
 mixin destroyForm(movie)
-    form.destroy(action=`/movies/destroy`, method="POST", onsubmit=`return confirm("Are you sure you want to delete this movie?")`)
+    form.destroy(action=`/movies/destroy`, method="POST", onsubmit=`return confirm("Deleting this movie will remove it from all of your lists. Are you sure?")`)
         input(type="hidden", name="id", value=movie.id)
-        input(type="submit", value="delete")
+        button.ui.labeled.icon.button.medium.negative(type="submit", value="delete")
+            i.close.icon
+            span Delete

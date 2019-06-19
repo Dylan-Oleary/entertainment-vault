@@ -1,0 +1,166 @@
+html, body {
+    min-height: 100vh;
+}
+
+body {
+    background-color: #F6F4F3;
+    display: flex;
+    flex-direction: column;
+}
+
+/* .action-button {
+    max-width: 100px;
+    height: 40px;
+} */
+
+.main-content {
+    flex: 1 0 auto;
+    padding-top: 70px;
+}
+
+.container-fluid {
+    width: 100vw;
+    height: auto;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.flash {
+    position: absolute;
+    top: 70px;
+    height: 50px;
+    width: 100%;
+    z-index: 9999999;
+    background: rgba(14, 77, 64, 0.5);
+}
+
+.poster {
+    height: 375px;
+    width: 250px;
+}
+
+.poster img {
+    height: 375px;
+    width: 250px;
+}
+
+.jumbo {
+    height: 530px;
+    padding: 0 !important;
+    margin: 0;
+    margin-top: -40px;
+}
+
+.jumbo::before {
+    content: "";
+    background-color: rgba(71, 73, 76, 0.8);
+    background-size: cover;
+    height: 530px;
+    width: 100vw;
+    position: absolute;
+}
+
+.jumbo-content {
+    display: flex;
+    width: 1000px;
+    margin: 0 auto;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    position: relative;
+    z-index: 1000;
+}
+
+.jumbo-control-buttons {
+    position: relative;
+    display: flex;
+}
+
+.rating-selector {
+    position: absolute;
+    display: flex;
+    height: 35px;
+    margin-top: 20px;
+}
+
+.rating-selector > .rating-buttons {
+    /* position: absolute !important; */
+    display: flex;
+    margin-left: 10px;
+}
+
+.jumbo-control-buttons button{
+    margin-right: 10px;
+
+}
+.jumbo-poster img {
+    height: 450px;
+    width: 300px;
+}
+
+.jumbo-info {
+    width: 700px;
+    padding: 1rem 2rem;
+    color: #fff;
+}
+
+.jumbo-info-body {
+    margin-top: 60px;
+}
+
+.jumbo-info > .jumbo-info-header, .jumbo-info-body, .jumbo-info-rating{
+    margin-bottom: 30px;
+}
+
+input.prompt {
+    border: none;
+}
+
+.ui.secondary.menu {
+    position: relative;
+    z-index: 9999;
+}
+
+#NavBar {
+    position: fixed;
+    z-index: 9999;
+    top:0;
+    background-color: #335CAD;
+    padding: 10px 0;
+    height: 70px;
+    width: 100vw;
+    border-radius: 2px;
+    box-shadow: 2px 0px 5px #555;
+}
+
+#NavBar * {
+    color: #F6F4F3;
+    font-size: 1.2rem;
+}
+
+#Footer {
+    background-color: #335CAD;
+    padding: 40px;
+    height: 250px;
+}
+
+#Footer * {
+    background-color: #335CAD;
+    color: #F6F4F3;
+    border: none;
+}
+
+#Footer .row {
+    width: 700px;
+}
+
+input {
+    color: black !important;
+}
+
+.hide {
+    display: none !important;
+}
+
+i.big.icon {
+    color: white;
+}
