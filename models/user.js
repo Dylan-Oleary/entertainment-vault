@@ -69,4 +69,21 @@ UserSchema.methods.authenticate = function(plainPassword, callback) {
     })
 };
 
+// //Get Watch List
+// UserSchema.methods.getList = async function(userId, res, list){
+//     const listIds = await this.find(list).then( list => {
+//         return list.map(movie => movie.id)
+//     })
+
+//     const movies = await Movie.find({
+//         _id: {"$in": listIds}
+//     })
+//     .then(movies => movies)
+//     .catch(err => {
+//         console.log(err);
+//     })
+
+//     return movies;
+// }
+
 module.exports = mongoose.model("User", UserSchema);

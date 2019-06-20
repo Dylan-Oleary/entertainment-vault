@@ -39,9 +39,10 @@ body {
     width: 250px;
 }
 
-.poster img {
-    height: 375px;
-    width: 250px;
+
+.card-poster {
+    height: 525px;
+    width: 350px;
 }
 
 .jumbo {
@@ -163,4 +164,22 @@ input {
 
 i.big.icon {
     color: white;
+}
+
+#CardList {
+    display: flex;
+    justify-content: space-between;
+}
+
+#MovieCard {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.card-content {
+    text-align: center;
+}
+
+.card-content * {
+    margin-top: 10px !important;
 }

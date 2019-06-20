@@ -1,5 +1,5 @@
 extends ../layouts/main.pug
-include ../partials/destroyForm.pug
+include ../partials/movieCard.pug
 include ../partials/actionButton.pug
 
 block content
@@ -7,24 +7,7 @@ block content
     header
       h1= title
 
-    .ui.container
-      table.ui.celled.padded.table
-        thead
-          tr
-            th Movie
-            th Rating
-            th Actions
-        
-        tbody
-          each movie in movies
-            tr
-              td
-                - const poster = `https://image.tmdb.org/t/p/original/${movie.poster_path}`
-                img.ui.top.aligned.tiny.image(src=poster)
-                a(href=`/movies/${movie.id}`)= movie.title
-              td
-                .ui.heart.rating(data-rating=movie.rating, data-max-rating="5")
-              td
-                +actionButton(movie, route)
-                +destroyForm(movie)
+    #CardList
+      each movie in movies
+        +movieCard(movie)
 

@@ -21,6 +21,89 @@ exports.new = (req, res) => {
     });
 };
 
+//Get User Lists
+exports.getWatchList = async (req, res) => {
+    await req.isAuthenticated();
+
+    const watchListIds = await User.findById(req.session.userId).then( user => {
+        return user.watchList.map(movie => movie.id)
+    });
+
+    Movie.find({
+        _id: {"$in": watchListIds}
+    })
+    .then(movies => {
+        if(movies.length !== 0) {
+            res.render("movies/index", {
+                movies: movies,
+                path: req.path
+            })
+        } else {
+            res.render("pages/error", {
+                message: "You don't have anything on your watchlist!"
+            })
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+exports.getFavouritesList = async (req, res) => {
+    await req.isAuthenticated();
+
+    const favouritesListIds = await User.findById(req.session.userId).then( user => {
+        return user.favouritesList.map(movie => movie.id)
+    });
+
+    Movie.find({
+        _id: {"$in": favouritesListIds}
+    })
+    .then(movies => {
+        if(movies.length !== 0) {
+            res.render("movies/index", {
+                movies: movies,
+                path: req.path
+            })
+        } else {
+            res.render("pages/error", {
+                message: "You don't have any favourites!!"
+            })
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+exports.getRatedList = async (req, res) => {
+    await req.isAuthenticated();
+
+    const ratedListIds = await User.findById(req.session.userId).then( user => {
+        return user.ratedList.map(movie => movie.id)
+    });
+
+    Movie.find({
+        _id: {"$in": ratedListIds}
+    })
+    .then(movies => {
+        if(movies.length !== 0) {
+            res.render("movies/index", {
+                movies: movies,
+                path: req.path
+            })
+        } else {
+            res.render("pages/error", {
+                message: "You haven't rated any movies!"
+            })
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
+
+//Update User Lists
 exports.updateRatedList = async (req, res) => {
     await req.isAuthenticated();
 
@@ -102,8 +185,13 @@ exports.updateRatedList = async (req, res) => {
                 }
             })
             .then( () => {
-                req.flash("success", "Movie was updated successfully");
-                res.redirect(`/movies/${req.body.movie.id}`)
+                if(req.body.user.action){
+                    req.flash("success", "Movie was updated successfully");
+                    res.redirect(`/users/rated`)
+                } else {
+                    req.flash("success", "Movie was updated successfully");
+                    res.redirect(`/movies/${req.body.movie.id}`)
+                }
             })
             .catch( err => {
                 console.log(err);
@@ -172,8 +260,13 @@ exports.updateFavouritesList = async (req, res) => {
             }
         })
         .then( () => {
-            req.flash("success", "Movie was updated successfully");
-            res.redirect(`/movies/${req.body.movie.id}`)
+            if(req.body.user.action){
+                req.flash("success", "Movie was updated successfully");
+                res.redirect(`/users/favourites`)
+            } else {
+                req.flash("success", "Movie was updated successfully");
+                res.redirect(`/movies/${req.body.movie.id}`)
+            }
         })
         .catch( err => {
             console.log(err);
@@ -242,8 +335,13 @@ exports.updateWatchList = async (req, res) => {
             }
         })
         .then( () => {
-            req.flash("success", "Movie was updated successfully");
-            res.redirect(`/movies/${req.body.movie.id}`)
+            if(req.body.user.action){
+                req.flash("success", "Movie was updated successfully");
+                res.redirect(`/users/watchlist`)
+            } else {
+                req.flash("success", "Movie was updated successfully");
+                res.redirect(`/movies/${req.body.movie.id}`)
+            }
         })
         .catch( err => {
             console.log(err);

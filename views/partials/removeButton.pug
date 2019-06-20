@@ -1,0 +1,7 @@
+mixin removeButton(movie, path)
+    form(action=(`/users${path}`), method="POST")
+        input(type="hidden", name="movie[id]", value=`${movie._id}`)
+        input(type="hidden", name="movie[title]", value=`${movie.title}`)
+        input(type="hidden", name="user[action]", value="remove")
+
+        button(type="submit")= `Remove from ${path}`

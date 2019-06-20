@@ -21,9 +21,9 @@ block content
                   span= genre
               span= ` | ${movie.runtime} minutes`
           .jumbo-control-buttons
-            +actionButton(movie, user, "rated")
-            +actionButton(movie, user, "watchlist")
-            +actionButton(movie, user, "favourites")
+            +actionButton(movie, user, "/rated")
+            +actionButton(movie, user, "/watchlist")
+            +actionButton(movie, user, "/favourites")
             if movie.status
               +destroyForm(movie)
           .jumbo-info-body

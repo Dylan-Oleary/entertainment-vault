@@ -1,8 +1,8 @@
-mixin actionButton(movie, user, route)
-    form.updateMenu(action=(`/users/${route}`), method="POST")
+mixin actionButton(movie, user, path)
+    form.updateMenu(action=(`/users${path}`), method="POST")
         input(type="hidden", name="movie[id]", value=`${movie._id}`)
         input(type="hidden", name="movie[title]", value=`${movie.title}`)
-        if route === "watchlist"
+        if path === "/watchlist"
             if user.onWatchList === true
                 button.ui.labeled.icon.button.medium.blue(type="submit")
                     i.bookmark.icon
@@ -11,7 +11,7 @@ mixin actionButton(movie, user, route)
                 button.ui.labeled.icon.button.medium.blue(type="submit")
                     i.bookmark.outline.icon
                     span WatchList
-        if route === "rated"
+        if path === "/rated"
             button.ui.labeled.icon.button.medium.yellow.rating-toggle.inactive(type="button")
                 i.star.icon
                 span Rate
@@ -26,7 +26,7 @@ mixin actionButton(movie, user, route)
                         span Save
                     button.ui.icon.button.tiny.clear-rating.hide(type="button") 
                         span Clear Rating
-        if route === "favourites"
+        if path === "/favourites"
             if user.onFavouritesList === true
                 button.ui.labeled.icon.button.medium.pink(type="submit")
                     i.heart.icon

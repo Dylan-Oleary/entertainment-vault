@@ -12,9 +12,9 @@ mixin nav
                             i.dropdown.icon
                             .menu
                                 a.item(href="/movies") All Movies
-                                a.item(href="/movies/watchlist") My Watch List
-                                a.item(href="/movies/rated") Rated
-                                a.item(href="/movies/favourites") Favourites
+                                a.item(href="/users/watchlist") My Watch List
+                                a.item(href="/users/rated") Rated
+                                a.item(href="/users/favourites") Favourites
                     if !isAuthenticated
                         a.item(href="/users/new") Register
                         a.item(href="/login") Login

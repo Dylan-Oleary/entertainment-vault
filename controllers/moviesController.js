@@ -31,7 +31,11 @@ exports.create = async (req, res) => {
 
     //Check if the tmdb_id exists in our movie DB
     const dbMovie = await Movie.findOne({
-        tmdb_id: req.body.movie.tmdb_id
+        $or: 
+            [
+                {"_id": req.body.movie._id},
+                {"tmdb_id": parseInt(req.body.movie.tmdb_id)}
+            ]
     })
 
     //If it doesn't, create the record
@@ -64,6 +68,7 @@ exports.create = async (req, res) => {
             tmdb_id: response.data.id
         })
         .then( movie => {
+            console.log("created");
             req.flash("success", "Movie entered successfully");
             res.redirect(`/movies/${movie._id}`)
         })
@@ -76,6 +81,7 @@ exports.create = async (req, res) => {
         })
     } else {
         //If it does, re-direct and don't call API
+        console.log("logged");
         res.redirect(`/movies/${dbMovie._id}`)
     }
 };
@@ -112,30 +118,30 @@ exports.edit = (req, res) => {
         });
 }
 
-exports.index = (req, res) => {
-    req.isAuthenticated();
+// exports.index = (req, res) => {
+//     req.isAuthenticated();
 
-    Movie.find({
-        user: req.session.userId
-    })
-        .then(movies => {
-            if(movies.length === 0){
-                res.render("pages/error", {
-                    message: "It looks like you don't have any movies in your list, try searching for some!"
-                })
-            }else {
-                res.render("movies/index", {
-                    movies: movies,
-                    title: "Movie List",
-                    route: req.path
-                })
-            }
-        })
-        .catch(err => {
-            req.flash("error", `ERROR: ${err}`);
-            res.redirect("/movies");
-        });
-};
+//     Movie.find({
+//         user: req.session.userId
+//     })
+//         .then(movies => {
+//             if(movies.length === 0){
+//                 res.render("pages/error", {
+//                     message: "It looks like you don't have any movies in your list, try searching for some!"
+//                 })
+//             }else {
+//                 res.render("movies/index", {
+//                     movies: movies,
+//                     title: "Movie List",
+//                     path: req.path
+//                 })
+//             }
+//         })
+//         .catch(err => {
+//             req.flash("error", `ERROR: ${err}`);
+//             res.redirect("/movies");
+//         });
+// };
 
 exports.show = (req, res) => {
     const movie = Movie.findById(req.params.id).then(movie => movie)
