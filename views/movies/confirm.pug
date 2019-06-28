@@ -4,7 +4,8 @@ include ../partials/movieCard.pug
 block content
     .ui.container
         header
-            h1 Are any of these what you were looking for?
+            h1= `We found ${movies.length} results`
 
-        each movie in movies
-            +movieCard(movie)
+        #SearchList
+            each movie in movies
+                +movieCard(movie)

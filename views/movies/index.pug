@@ -1,5 +1,5 @@
 extends ../layouts/main.pug
-include ../partials/movieCard.pug
+include ../partials/listCard.pug
 include ../partials/actionButton.pug
 
 block content
@@ -7,7 +7,7 @@ block content
     header
       h1= title
 
-    #CardList
+    #ListView
       each movie in movies
-        +movieCard(movie)
+        +listCard(movie)
 

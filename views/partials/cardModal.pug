@@ -1,0 +1,15 @@
+mixin cardModal(movie, path)
+    #CardModal
+        form(action=(`/movies`), method="POST")
+            if movie._id
+                input(type="hidden" name="movie[_id]", required, value=(movie._id))
+            input(type="hidden" name="movie[tmdb_id]", required, value=(movie.id))
+            input(type="hidden" name="movie[title]", required, value=(movie.title))
+            input(type="hidden" name="movie[poster_path]", required, value=(movie.poster_path))
+            input(type="hidden" name="movie[release_date]", required, value=(movie.release_date))
+            input(type="hidden" name="movie[overview]", required, value=(movie.overview))
+
+            button.ui.button.medium.inverted(type="submit")
+                span See More
+        if movie._id
+            +removeButton(movie, path) 

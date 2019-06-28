@@ -1,6 +1,3 @@
-include ../partials/nav.pug
-include ../partials/footer.pug
-
 block globals
 
 doctype html
@@ -16,12 +13,8 @@ html(lang="en")
     title= (title ? title : "I do not have a title yet!")
 
     body
-        +nav
-        #Toastr
-            #{toastr}
-        .main-content
+        .main-content.register
             block content
-        +footer
 
         script(src='https://code.jquery.com/jquery-3.1.1.min.js' integrity='sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=' crossorigin='anonymous')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js')

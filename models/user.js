@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
 const SALT_WORK_FACTOR = 10;
-const Movie = require("../models/movie");
 
 const UserSchema = new mongoose.Schema(
     {
@@ -19,6 +17,10 @@ const UserSchema = new mongoose.Schema(
             required: true
         },
         password: {
+            type: String,
+            required: true
+        },
+        username: {
             type: String,
             required: true
         },
@@ -68,22 +70,5 @@ UserSchema.methods.authenticate = function(plainPassword, callback) {
         callback(null, isMatch);
     })
 };
-
-// //Get Watch List
-// UserSchema.methods.getList = async function(userId, res, list){
-//     const listIds = await this.find(list).then( list => {
-//         return list.map(movie => movie.id)
-//     })
-
-//     const movies = await Movie.find({
-//         _id: {"$in": listIds}
-//     })
-//     .then(movies => movies)
-//     .catch(err => {
-//         console.log(err);
-//     })
-
-//     return movies;
-// }
 
 module.exports = mongoose.model("User", UserSchema);

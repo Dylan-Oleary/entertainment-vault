@@ -48,10 +48,5 @@ $(document).ready(function(){
         }
     })
 
-
     $('.ui.dropdown').dropdown();
-
-    $(".title-submit").click(() => {
-        $('#CreateForm').submit();
-    });
 });

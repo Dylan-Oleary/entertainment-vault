@@ -1,26 +1,35 @@
-form(action=(user? `/users/update` : "/users"), method="POST")
+form.ui.form(action=(user ? `/users/update` : "/users"), method="POST")
   if user
     input(type="hidden", name="id", value=user.id)
 
-  .form-group
-    label First Name
-    input.form-control(name="user[firstName]", required, value=(user ? user.firstName : null))
+  h2= user ? "Update your account information" : "Register for a What Are We Watching? account!"
 
-  .form-group
-    label Last Name
-    input.form-control(name="user[lastName]", required, value=(user ? user.lastName : null))
+  .form-image-container
+    img.ui.fluid.image(src="/images/pink-blue-circle.svg")
 
-  .form-group
-    label Email
-    input.form-control(name="user[email]", required, value=(user ? user.email : null))
+  .field
+    label Name
+    .two.fields
+      .field
+        input.form-control(name="user[firstName]", required, value=(user ? user.firstName : null), placeholder="First Name")
+      .field
+        input.form-control(name="user[lastName]", required, value=(user ? user.lastName : null), placeholder="Last Name")
 
-  .form-group
+  .field
+    .two.fields
+      .field
+        label E-mail
+        input.form-control(name="user[email]", required, value=(user ? user.email : null), placeholder="jessepinkman@example.com")
+      .field
+        label Username
+        input.form-control(name="user[username]", required, value=(user ? user.username : null), placeholder="Username")
+
+  .field
     label Password
     input.form-control(name="user[password]", type="password", required, value=(user ? user.password : null))
 
-  .form-group
-    label Password Confirmation
+  .field
+    label Confirm Password
     input.form-control(name="user[passwordConfirmation]", required, type="password", value=(user ? user.passwordConfirmation : null))
   
-  .form-group
-    button.btn.btn-dark(type="submit") Submit
+  button.ui.button(type="submit") Submit

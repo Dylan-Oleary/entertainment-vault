@@ -1,5 +1,7 @@
 const User = require("../models/user");
 const Movie = require("../models/movie");
+const genreFormatter = require("../utils/genreFormatter");
+const toastrConfig = require("../utils/toastrConfig");
 
 exports.create = (req, res) => {
     User.create(req.body.user)
@@ -34,9 +36,18 @@ exports.getWatchList = async (req, res) => {
     })
     .then(movies => {
         if(movies.length !== 0) {
+            const movieObjectsToRender = movies.map(movie => {
+                movie.genres = genreFormatter.formatGenres(movie.genres);
+
+                return movie;
+            })
+
             res.render("movies/index", {
-                movies: movies,
-                path: req.path
+                movies: movieObjectsToRender,
+                path: {
+                    slug: req.path,
+                    formattedSlug: "WatchList"
+                }
             })
         } else {
             res.render("pages/error", {
@@ -63,7 +74,10 @@ exports.getFavouritesList = async (req, res) => {
         if(movies.length !== 0) {
             res.render("movies/index", {
                 movies: movies,
-                path: req.path
+                path: {
+                    slug: req.path,
+                    formattedSlug: "Favourites"
+                }
             })
         } else {
             res.render("pages/error", {
@@ -90,7 +104,10 @@ exports.getRatedList = async (req, res) => {
         if(movies.length !== 0) {
             res.render("movies/index", {
                 movies: movies,
-                path: req.path
+                path: {
+                    slug: req.path,
+                    formattedSlug: "Rated List"
+                }
             })
         } else {
             res.render("pages/error", {
@@ -136,15 +153,13 @@ exports.updateRatedList = async (req, res) => {
             }
         })
         .then( () => {
-            req.flash("success", "Movie was updated successfully");
+            req.toastr.success(`${movie.title} got ${movie.rating}/5 stars from you. You can find it on your Rated List`, "Success", toastrConfig);
+
             res.redirect(`/movies/${req.body.movie.id}`)
         })
         .catch( err => {
-            console.log(err);
-            req.flash("error", `ERROR: ${err}`);
-            res.render("movies/edit", {
-                movie: req.body.movie,
-                title: "Edit Movie"
+            res.render("pages/error", {
+                message: "something went wrong"
             })
         })
     }else{
@@ -161,15 +176,13 @@ exports.updateRatedList = async (req, res) => {
                 }
             })
             .then( () => {
-                req.flash("success", "Movie was updated successfully");
+                req.toastr.success(`${movie.title} got ${movie.rating}/5 stars from you. You can find it on your Rated List`, "Success", toastrConfig);
+
                 res.redirect(`/movies/${req.body.movie.id}`)
             })
             .catch( err => {
-                console.log(err);
-                req.flash("error", `ERROR: ${err}`);
-                res.render("movies/edit", {
-                    movie: req.body.movie,
-                    title: "Edit Movie"
+                res.render("pages/error", {
+                    message: "Something went wrong"
                 })
             })
         }else {
@@ -185,20 +198,17 @@ exports.updateRatedList = async (req, res) => {
                 }
             })
             .then( () => {
-                if(req.body.user.action){
-                    req.flash("success", "Movie was updated successfully");
+                req.toastr.success(`${movie.title} has been removed from your rated list`, "Success", toastrConfig);
+
+                if(req.body.movie.remove){
                     res.redirect(`/users/rated`)
                 } else {
-                    req.flash("success", "Movie was updated successfully");
                     res.redirect(`/movies/${req.body.movie.id}`)
                 }
             })
             .catch( err => {
-                console.log(err);
-                req.flash("error", `ERROR: ${err}`);
-                res.render("movies/edit", {
-                    movie: req.body.movie,
-                    title: "Edit Movie"
+                res.render("pages/error", {
+                    message: "Something went wrong"
                 })
             })
         }
@@ -236,15 +246,13 @@ exports.updateFavouritesList = async (req, res) => {
             }
         })
         .then( () => {
-            req.flash("success", "Movie was updated successfully");
+            req.toastr.success(`${movie.title} has been added to your Favourites List`, "Success", toastrConfig);
+
             res.redirect(`/movies/${req.body.movie.id}`)
         })
         .catch( err => {
-            console.log(err);
-            req.flash("error", `ERROR: ${err}`);
-            res.render("movies/edit", {
-                movie: req.body.movie,
-                title: "Edit Movie"
+            res.render("pages/error", {
+                message: "Something went wrong"
             })
         })
     } else {
@@ -260,20 +268,18 @@ exports.updateFavouritesList = async (req, res) => {
             }
         })
         .then( () => {
-            if(req.body.user.action){
-                req.flash("success", "Movie was updated successfully");
+            req.toastr.success(`${movie.title} has been removed from Favourites List`, "Success", toastrConfig);
+
+            //When deleting from the index list
+            if(req.body.movie.remove){                
                 res.redirect(`/users/favourites`)
-            } else {
-                req.flash("success", "Movie was updated successfully");
+            } else {                
                 res.redirect(`/movies/${req.body.movie.id}`)
             }
         })
         .catch( err => {
-            console.log(err);
-            req.flash("error", `ERROR: ${err}`);
-            res.render("movies/edit", {
-                movie: req.body.movie,
-                title: "Edit Movie"
+            res.render("pages/error", {
+                message: "Something went wrong"
             })
         })
     }
@@ -311,15 +317,13 @@ exports.updateWatchList = async (req, res) => {
             }
         })
         .then( () => {
-            req.flash("success", "Movie was updated successfully");
+            req.toastr.success(`${movie.title} has been added to your Watch List`, "Success", toastrConfig);
+
             res.redirect(`/movies/${req.body.movie.id}`)
         })
         .catch( err => {
-            console.log(err);
-            req.flash("error", `ERROR: ${err}`);
-            res.render("movies/edit", {
-                movie: req.body.movie,
-                title: "Edit Movie"
+            res.render("pages/error", {
+                message: "Something went wrong"
             })
         })
     } else {
@@ -335,20 +339,18 @@ exports.updateWatchList = async (req, res) => {
             }
         })
         .then( () => {
-            if(req.body.user.action){
-                req.flash("success", "Movie was updated successfully");
+            req.toastr.success(`${movie.title} has been removed from your Watch List`, "Success", toastrConfig);
+
+            if(req.body.movie.remove){
                 res.redirect(`/users/watchlist`)
             } else {
-                req.flash("success", "Movie was updated successfully");
                 res.redirect(`/movies/${req.body.movie.id}`)
             }
         })
         .catch( err => {
             console.log(err);
-            req.flash("error", `ERROR: ${err}`);
-            res.render("movies/edit", {
-                movie: req.body.movie,
-                title: "Edit Movie"
+            res.render("pages/error", {
+                message: "Something went wrong"
             })
         })
     }

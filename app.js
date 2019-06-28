@@ -17,6 +17,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
+const toastr = require("express-toastr");
 
 app.use(cookieParser());
 
@@ -32,12 +33,12 @@ app.use(session({
 }));
 
 app.use(flash());
-app.use( (req, res, next) => {
-    res.locals.flash = res.locals.flash || {};
-    res.locals.flash.success = req.flash("success") || null;
-    res.locals.flash.error = req.flash("error") || null;
 
-    next();
+app.use(toastr());
+
+app.use(function (req, res, next){
+    res.locals.toastr = req.toastr.render()
+    next()
 });
 
 //Body Parser

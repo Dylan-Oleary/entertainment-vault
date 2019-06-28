@@ -1,14 +1,15 @@
 include ../partials/removeButton.pug
+include ./cardModal.pug
 
 mixin movieCard(movie)
     - const poster = `https://image.tmdb.org/t/p/original/${movie.poster_path}`
     - const releaseYear = movie.release_date.substring(0,4)
     
-    .ui.centered.card
-        .image
-            img(src=poster)
-        .card-content
-            h2.title-submit= `${movie.title} (${releaseYear})`
+    #MovieCard
+        .search-view-image-container.blur
+            img.ui.fluid.image(src=poster)
+            +cardModal(movie, path)
+        .search-view-card-content
             form#CreateForm(action=(`/movies`), method="POST")
                 if movie._id
                     input(type="hidden" name="movie[_id]", required, value=(movie._id))
@@ -18,7 +19,5 @@ mixin movieCard(movie)
                 input(type="hidden" name="movie[release_date]", required, value=(movie.release_date))
                 input(type="hidden" name="movie[overview]", required, value=(movie.overview))
 
-                button(type="submit")= `${movie.title} (${releaseYear})`
-            
-            if movie._id
-                +removeButton(movie, path)
+                button.title-button(type="submit")= `${movie.title} (${releaseYear})`
+            p.synopsis= movie.overview

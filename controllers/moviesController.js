@@ -185,6 +185,11 @@ exports.show = (req, res) => {
         const genres = genreFormatter.formatGenres(movie.genres);
         movie.genres = genres;
 
+        // //Generate Toast messages if needed
+        // if(req.session.toast === "remove"){
+        //     req.toastr.info("Movie was removed from list", "Success");
+        // }
+
         res.render("movies/show", {
             movie: movie,
             user: user
