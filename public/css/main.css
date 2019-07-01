@@ -13,8 +13,10 @@ body {
     padding-top: 70px;
 }
 
-.register {
+.static-page {
+    flex: 1 0 auto;
     background-color: #13293d;
+    padding-top: 40px;
 }
 
 .container-fluid {
@@ -23,15 +25,6 @@ body {
     padding-top: 40px;
     padding-bottom: 40px;
 }
-
-/* .flash {
-    position: absolute;
-    top: 70px;
-    height: 50px;
-    width: 100%;
-    z-index: 9999999;
-    background: rgba(14, 77, 64, 0.5);
-} */
 
 .poster {
     height: 375px;
@@ -83,7 +76,6 @@ body {
 }
 
 .rating-selector > .rating-buttons {
-    /* position: absolute !important; */
     display: flex;
     margin-left: 10px;
 }
@@ -135,6 +127,10 @@ input.prompt {
 #NavBar * {
     color: #F6F4F3;
     font-size: 1.2rem;
+}
+
+#NavBar .item {
+    height: 45px;
 }
 
 #Footer {
@@ -323,14 +319,180 @@ i.big.icon {
 
 #Toastr {
     position: absolute;
+    opacity: 0;
 }
 
 #toast-container {
     margin-top: 75px;
 }
 
-.form-image-container {
-    height: 250px;
-    width: 250px;
-    margin: 0 auto;
+#toast-container > .favourites {
+    background-color: #e03997 !important;
 }
+
+#toast-container > .watchlist {
+    background-color: #2185d0 !important;
+}
+
+#toast-container > .rated {
+    background-color: #fbbd08 !important;
+}
+
+#toast-container > .error {
+    background-color: #ef304a !important;
+}
+
+.form-image-container {
+    height: 300px;
+    width: 500px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+#RegisterForm .form-control, #LoginForm .form-control, #SearchBar .prompt {
+    background-color: #13293d !important;
+    border: none !important;
+    padding-left: 0;  
+}
+
+#RegisterForm .input-field, #LoginForm .input-field, #SearchBar input {
+    border-bottom: 2px solid #F6F4F3 !important;
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+#RegisterForm{
+    margin-bottom: 40px;
+}
+
+#LoginForm {
+    width: 500px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+#RegisterForm *, #LoginForm *, #SearchBar *{
+    color: #F6F4F3 !important;
+}
+
+#RegisterForm h2, #LoginForm h2{
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 50px;
+}
+
+#RegisterForm button, #LoginForm button{
+    background-color:#ef304a;
+}
+
+#RegisterForm .actions, #LoginForm .actions{
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.ui.modal {
+    text-align: center;
+}
+
+.ui.modal .actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ui.modal 
+
+#RegisterForm .inline-form-field, #LoginForm .inline-form-field{
+    display: flex;
+    justify-content: space-between;
+}
+
+.show-password {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.show-password input {
+    margin-right: 5px;
+}
+
+.ui.form .field .field.input-field .form-control:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #13293d inset !important;
+    box-shadow: 0 0 0 1000px #13293d inset !important;
+    -webkit-text-fill-color: #F6F4F3;
+    caret-color: #F6F4F3;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    color: #F6F4F3;
+}
+
+.center a {
+    padding: 0 5px;
+    color: #ef304a;
+}
+
+.center a:hover {
+    text-decoration: underline;
+}
+
+#LogoutForm {
+    display: none;
+}
+
+#Logout {
+    cursor: pointer;
+}
+
+#SearchBar {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.username {
+    margin-left: 5px;
+}
+
+#AccountForm {
+    display: flex;
+    margin: 20px 0;
+}
+
+#AccountContainer {
+    margin: 40px 0;
+    text-align: center;
+}
+
+#AccountContainer h1 {
+    margin-bottom: 40px;
+}
+
+.account-information {
+    flex-grow: 1;
+    margin-left: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.account-information .ui.bottom.attached.segment {
+    flex-grow: 1;
+}
+
+.avatar-image {
+    width: 250px;
+    margin-bottom: 20px;
+}
+
+#TabContent {
+    padding-top: 10px;
+}
+
+.bg-red {
+    background-color: #ef304a !important;
+    color: #F6F4F3 !important;
+}
+

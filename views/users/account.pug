@@ -1,0 +1,42 @@
+extends ../layouts/main.pug
+include ../partials/deleteUser.pug
+include ../partials/editUser.pug
+
+block content
+    #AccountContainer.ui.container
+        h1= `Welcome, ${user.username}!`
+        #AccountForm
+            .avatar-container
+                .avatar-image
+                    img.ui.fluid.image(src="/images/pink-blue-circle.svg")
+                .actions
+                    button.ui.button Edit Profile Picture
+            .account-information
+                .ui.top.attached.tabular.menu
+                    .item.active(data-tab="profile") Profile
+                    .item(data-tab="edit-profile") Edit Profile
+                    .item(data-tab="delete-account") Delete Account
+                .ui.bottom.attached.segment
+                    #TabContent.ui.tab.grid(data-tab="profile")
+                        .row
+                            .left.aligned.eight.wide.column
+                                h4.ui.header First Name
+                                p= user.firstName
+                            .left.aligned.eight.wide.column
+                                h4.ui.header Last Name
+                                p= user.lastName
+                        .row
+                            .left.aligned.eight.wide.column
+                                h4.ui.header E-mail
+                                p= user.email
+                            .left.aligned.eight.wide.column
+                                h4.ui.header Member Since
+                                p placeholder
+                        
+                    .ui.tab(data-tab="edit-profile")
+                        +editUser(user)
+                    .ui.tab(data-tab="delete-account")
+                        h3.header WARNING: Deleting your account is permanent and cannot be undone!
+                        +deleteUser(user)
+
+            

@@ -11,7 +11,10 @@ block content
     .jumbo(style=`background-image: url(${backdropPoster}); background-size: cover;`)
       .jumbo-content
         .jumbo-poster
-          img.show-poster(src=poster)
+          if movie.poster_path
+            img.show-poster(src=poster)
+          else
+            img.show-poster(src="/images/case-white.svg")
         .jumbo-info
           .jumbo-info-header
             h1= `${movie.title} (${releaseYear})`
@@ -20,12 +23,15 @@ block content
                 each genre in movie.genres
                   span= genre
               span= ` | ${movie.runtime} minutes`
-          .jumbo-control-buttons
-            +actionButton(movie, user, "/rated")
-            +actionButton(movie, user, "/watchlist")
-            +actionButton(movie, user, "/favourites")
-            if movie.status
-              +destroyForm(movie)
+          if sessionUserName
+            .jumbo-control-buttons
+              +actionButton(movie, user, "/rated")
+              +actionButton(movie, user, "/watchlist")
+              +actionButton(movie, user, "/favourites")
+              if movie.status
+                +destroyForm(movie)
+          else
+            h3 Log In to rate, comment and add movies to your account!
           .jumbo-info-body
             h3 Synopsis
             p= movie.overview

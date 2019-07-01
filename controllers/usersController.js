@@ -3,19 +3,74 @@ const Movie = require("../models/movie");
 const genreFormatter = require("../utils/genreFormatter");
 const toastrConfig = require("../utils/toastrConfig");
 
+exports.account = async (req, res) => {
+    await req.isAuthenticated();
+
+    User.findById(req.session.userId)
+    .then( user => {
+        res.render("users/account", {
+            title: "My Account",
+            user: user
+        })
+    })
+
+}
+
 exports.create = (req, res) => {
     User.create(req.body.user)
     .then(() => {
-        req.flash('success', "You are now registered");
         res.redirect("/login");
     })
     .catch( err => {
-        req.flash("error", `ERROR: ${err}`);
         res.redirect("users/new", {
             message: "It looks like you don't have any movies in your list, try searching for some!"
         })
     })
 };
+
+exports.delete = async (req, res) => {
+    await req.isAuthenticated();
+
+    if(req.body.user.id && req.session.userId && req.body.user.id === req.session.userId){
+        User.deleteOne({
+            _id: req.body.user.id
+        })
+        .then( () => {
+            //Clear the session
+            req.session.userId = null;
+            req.session.userName = null;
+
+            req.toastr.success("Your account was successfully deleted!", "Success");
+            res.redirect("/login");
+        })
+        .catch( () => {
+            req.toastr.error("Error", "There was an error deleting your account");
+            res.redirect("users/account");
+        })
+    }
+}
+
+exports.updateUser = async (req, res) => {
+    await req.isAuthenticated();
+
+    User.updateOne({
+        _id: req.body.user.id
+    },{
+        firstName: req.body.user.firstName,
+        lastName: req.body.user.lastName,
+        email: req.body.user.email
+    },{
+        runValidators: true
+    })
+    .then( () => {
+        req.toastr.success("Profile successfully updated", "Update successful!");
+        res.redirect("/users/account");
+    })
+    .catch(() => {
+        req.toastr.error("Update Failed!", "Update unsuccessful!");
+        res.redirect("/users/account");
+    })
+}
 
 exports.new = (req, res) => {
     res.render("users/new", {
@@ -153,6 +208,7 @@ exports.updateRatedList = async (req, res) => {
             }
         })
         .then( () => {
+            toastrConfig.toastClass = "rated";
             req.toastr.success(`${movie.title} got ${movie.rating}/5 stars from you. You can find it on your Rated List`, "Success", toastrConfig);
 
             res.redirect(`/movies/${req.body.movie.id}`)
@@ -176,6 +232,7 @@ exports.updateRatedList = async (req, res) => {
                 }
             })
             .then( () => {
+                toastrConfig.toastClass = "rated";
                 req.toastr.success(`${movie.title} got ${movie.rating}/5 stars from you. You can find it on your Rated List`, "Success", toastrConfig);
 
                 res.redirect(`/movies/${req.body.movie.id}`)
@@ -198,6 +255,7 @@ exports.updateRatedList = async (req, res) => {
                 }
             })
             .then( () => {
+                toastrConfig.toastClass = "rated";
                 req.toastr.success(`${movie.title} has been removed from your rated list`, "Success", toastrConfig);
 
                 if(req.body.movie.remove){
@@ -246,6 +304,7 @@ exports.updateFavouritesList = async (req, res) => {
             }
         })
         .then( () => {
+            toastrConfig.toastClass = "favourites";
             req.toastr.success(`${movie.title} has been added to your Favourites List`, "Success", toastrConfig);
 
             res.redirect(`/movies/${req.body.movie.id}`)
@@ -268,6 +327,7 @@ exports.updateFavouritesList = async (req, res) => {
             }
         })
         .then( () => {
+            toastrConfig.toastClass = "favourites";
             req.toastr.success(`${movie.title} has been removed from Favourites List`, "Success", toastrConfig);
 
             //When deleting from the index list
@@ -317,6 +377,7 @@ exports.updateWatchList = async (req, res) => {
             }
         })
         .then( () => {
+            toastrConfig.toastClass = "watchlist";
             req.toastr.success(`${movie.title} has been added to your Watch List`, "Success", toastrConfig);
 
             res.redirect(`/movies/${req.body.movie.id}`)
@@ -339,6 +400,7 @@ exports.updateWatchList = async (req, res) => {
             }
         })
         .then( () => {
+            toastrConfig.toastClass = "watchlist";
             req.toastr.success(`${movie.title} has been removed from your Watch List`, "Success", toastrConfig);
 
             if(req.body.movie.remove){

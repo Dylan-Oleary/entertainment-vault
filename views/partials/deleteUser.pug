@@ -1,0 +1,14 @@
+mixin deleteUser(user)
+    .ui.modal
+        i.close.icon
+        h2.header Are you sure?
+        .content
+            p You will lose all of your movie lists and account information. There is no going back.
+        .actions
+            .ui.cancel.button No, thanks!
+            form(action=("/users/delete"), method="POST")
+                input(type="hidden", name="user[id]", value=user.id)
+                button.ui.approve.button.bg-red(type="submit") Delete Account
+
+    .actions
+        button.modalToggle.ui.button Delete Account

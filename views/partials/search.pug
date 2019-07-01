@@ -1,4 +1,4 @@
 mixin search
-    form.ui.icon.input(action="/movies/confirm", method="POST")
-        input.prompt(type="text" name="movie[title]", required, placeholder="Search Movies" autocomplete="off")
+    form#SearchBar.ui.input(action="/movies/confirm", method="POST")
         i.search.icon
+        input.prompt(type="text" name="movie[title]", required, placeholder="Search for a movie..." autocomplete="off")

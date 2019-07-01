@@ -1,18 +1,31 @@
-extends ../layouts/main.pug
+extends ../layouts/register.pug
+
 block content
-  .container
-    header
-      h1 Login
+  .ui.container
+    .form-image-container
+      img.ui.fluid.image(src="/images/inverted-logo.svg")
+    #LoginForm
+      form.ui.form(action="/authenticate", method="POST")
 
-    div
-      form(action="/authenticate", method = "POST")
-        .form-group
-          label Email
-          input.form-control(name="email", required)
+        h2 Log In!
+        .field
+          .field.input-field
+            label E-mail
+            input.form-control(name="email", required, placeholder="bettercallsaul@abq.com")
 
-        .form-group
-          label Password
-          input.form-control(name="password", type="password", required)
-        
-        .form-group
-          button.btn.btn-dark(type="submit") Submit
+        .field
+          .field.input-field
+            .inline-form-field
+              label Password
+              .show-password
+                input#PasswordToggle.ui.checkbox(type="checkbox")
+                label Show Password
+            input#PasswordField.form-control(name="password", type="password", required, placeholder="Enter your password")
+
+        .actions
+          button.ui.button(type="submit") Log In
+    .center
+      span Don't have an account? 
+        a(href="/users/new") Click here to register
+      span or 
+        a(href="/") continue without account      

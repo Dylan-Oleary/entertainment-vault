@@ -7,7 +7,10 @@ mixin movieCard(movie)
     
     #MovieCard
         .search-view-image-container.blur
-            img.ui.fluid.image(src=poster)
+            if movie.poster_path
+                img.ui.fluid.image(src=poster)
+            else
+                img.ui.fluid.image(src="/images/case-white.svg")
             +cardModal(movie, path)
         .search-view-card-content
             form#CreateForm(action=(`/movies`), method="POST")

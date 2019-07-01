@@ -13,7 +13,9 @@ html(lang="en")
     title= (title ? title : "I do not have a title yet!")
 
     body
-        .main-content.register
+        .static-page
+            #Toastr
+                #{toastr}
             block content
 
         script(src='https://code.jquery.com/jquery-3.1.1.min.js' integrity='sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=' crossorigin='anonymous')

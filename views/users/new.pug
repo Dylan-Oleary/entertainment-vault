@@ -1,6 +1,11 @@
 extends ../layouts/register.pug
+include ./form.pug
 
 block content
   .ui.container
-    div
-      include ./form.pug
+    .form-image-container
+      img.ui.fluid.image(src="/images/inverted-logo.svg")
+    +form(user)
+    .center
+      span Already have an account? 
+        a(href="/login") Click here to login

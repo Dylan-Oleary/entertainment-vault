@@ -1,35 +1,44 @@
-form.ui.form(action=(user ? `/users/update` : "/users"), method="POST")
-  if user
-    input(type="hidden", name="id", value=user.id)
-
-  h2= user ? "Update your account information" : "Register for a What Are We Watching? account!"
-
-  .form-image-container
-    img.ui.fluid.image(src="/images/pink-blue-circle.svg")
-
-  .field
-    label Name
-    .two.fields
+mixin form(user)
+  #RegisterForm
+    form.ui.form(action=(user ? `/users/update` : "/users"), method="POST")
+      if user
+        input(type="hidden", name="id", value=user.id)
+      
+      h2= user ? "Update your account information" : "Sign Up!"
+    
       .field
-        input.form-control(name="user[firstName]", required, value=(user ? user.firstName : null), placeholder="First Name")
-      .field
-        input.form-control(name="user[lastName]", required, value=(user ? user.lastName : null), placeholder="Last Name")
+        .two.fields
+          .field.input-field
+            label First Name
+            input.form-control(name="user[firstName]", required, value=(user ? user.firstName : null), placeholder="Jesse")
+          .field.input-field
+            label Last Name
+            input.form-control(name="user[lastName]", required, value=(user ? user.lastName : null), placeholder="Pinkman")
 
-  .field
-    .two.fields
       .field
-        label E-mail
-        input.form-control(name="user[email]", required, value=(user ? user.email : null), placeholder="jessepinkman@example.com")
+        .two.fields
+          .field.input-field
+            label E-mail
+            input.form-control(name="user[email]", required, value=(user ? user.email : null), placeholder="jessepinkman@example.com")
+          .field.input-field
+            label Username
+            input.form-control(name="user[username]", required, value=(user ? user.username : null), placeholder="cpncook")
+
       .field
-        label Username
-        input.form-control(name="user[username]", required, value=(user ? user.username : null), placeholder="Username")
-
-  .field
-    label Password
-    input.form-control(name="user[password]", type="password", required, value=(user ? user.password : null))
-
-  .field
-    label Confirm Password
-    input.form-control(name="user[passwordConfirmation]", required, type="password", value=(user ? user.passwordConfirmation : null))
-  
-  button.ui.button(type="submit") Submit
+        .two.fields
+          .field.input-field
+            .inline-form-field
+              label Password
+              .show-password
+                input#PasswordToggle.ui.checkbox(type="checkbox")
+                label Show Password
+            input#PasswordField.form-control(name="user[password]", type="password", required, value=(user ? user.password : null), placeholder="Choose a password")
+          .field.input-field
+            .inline-form-field
+              label Confirm Password
+              .show-password
+                input#ConfirmPasswordToggle.ui.checkbox(type="checkbox")
+                label Show Password
+            input#ConfirmPasswordField.form-control(name="user[passwordConfirmation]", required, type="password", value=(user ? user.passwordConfirmation : null), placeholder="Re-Enter your password")
+      .actions
+        button.ui.button(type="submit")= user ? "Update" : "Create Account"

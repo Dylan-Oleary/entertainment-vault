@@ -8,18 +8,24 @@ mixin nav
                     a.item(href='/') Home
                     if isAuthenticated
                         .ui.dropdown.item
-                            span.text Movies
+                            span.text My Lists
                             i.dropdown.icon
                             .menu
-                                a.item(href="/movies") All Movies
                                 a.item(href="/users/watchlist") My Watch List
                                 a.item(href="/users/rated") Rated
                                 a.item(href="/users/favourites") Favourites
+                    #SearchBar.item
+                        +search
                     if !isAuthenticated
                         a.item(href="/users/new") Register
                         a.item(href="/login") Login
                     if isAuthenticated
-                        form(action="/logout", method="POST")
-                            input.item(type="submit", value="Logout")
-                    .item.right.floated.ui.eight.wide.column
-                        +search
+                        .ui.inline.dropdown.item
+                            img.ui.avatar.image(src="/images/pink-blue-circle.svg")
+                            span.username= sessionUserName
+                            i.dropdown.icon
+                            .menu
+                                a.item(href="/users/account") My Account
+                                span#Logout.item Log Out
+                                form#LogoutForm(action="/logout", method="POST")
+                                    input.item(type="submit")

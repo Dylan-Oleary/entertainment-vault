@@ -2,21 +2,25 @@ const Movie = require("../models/movie");
 const tmdb = require("../apis/tmdb");
 const genreFormatter = require("../utils/genreFormatter");
 const User = require("../models/user");
+const toastrConfig = require("../utils/toastrConfig");
 
 exports.confirm = (req, res) => {
+    //Store the search term as a session variable
+    req.session.searchTerm = req.body.movie.title.toLowerCase();
+
     //We search the API for movies with the title, we get back an Array
     tmdb.get("search/movie", {
         params: {
             api_key: process.env.TMDB_KEY,
             language: "en-US",
-            query: req.body.movie.title.toLowerCase(),
+            query: req.session.searchTerm,
             page: 1,
             include_adult: false
         }
     }).then( response => {
         if (response.data.results.length === 0){
             res.render("pages/error", {
-                message: `We couldn't find anything that goes by the name ${req.body.movie.title}, try searching again!`
+                message: `Weelelele couldn't find anything that goes by the name ${req.body.movie.title}, try searching again!`
             })
         }else {
             res.render("movies/confirm", {
@@ -27,62 +31,63 @@ exports.confirm = (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    await req.isAuthenticated();
-
-    //Check if the tmdb_id exists in our movie DB
-    const dbMovie = await Movie.findOne({
-        $or: 
-            [
-                {"_id": req.body.movie._id},
-                {"tmdb_id": parseInt(req.body.movie.tmdb_id)}
-            ]
-    })
-
-    //If it doesn't, create the record
-    if (!dbMovie){
-        const response = await tmdb.get(`movie/${req.body.movie.tmdb_id}`, {
-            params: {
-                api_key: process.env.TMDB_KEY,
-                movie_id: req.body.movie.tmdb_id,
-                language: "en-US",
-                append_to_response: "credits"
-            }
-        }).catch(err => {
-            console.log("Woops")
+    if(!req.session.userName || !req.session.userId){
+        toastrConfig.toastClass = "error";
+        req.toastr.error("You must be logged in to access this feature!", "Woops!", toastrConfig);
+        res.redirect("/");
+    }else {
+        //Check if the tmdb_id exists in our movie DB
+        const dbMovie = await Movie.findOne({
+            $or: 
+                [
+                    {"_id": req.body.movie._id},
+                    {"tmdb_id": parseInt(req.body.movie.tmdb_id)}
+                ]
         })
-
-        Movie.create({
-            backdrop_path: response.data.backdrop_path,
-            budget: response.data.budget,
-            cast: response.data.credits.cast,
-            crew: response.data.credits.crew,
-            genres: response.data.genres,
-            overview: response.data.overview,
-            poster_path: response.data.poster_path,
-            production_companies: response.data.production_companies,
-            release_date: response.data.release_date,
-            runtime: response.data.runtime,
-            status: response.data.status,
-            tagline: response.data.tagline,
-            title: response.data.title,
-            tmdb_id: response.data.id
-        })
-        .then( movie => {
-            console.log("created");
-            req.flash("success", "Movie entered successfully");
-            res.redirect(`/movies/${movie._id}`)
-        })
-        .catch( err => {
-            console.log(err);
-            req.flash("error", `ERROR: ${err}`);
-            res.render("pages/error", {
-                message: "It looks like you don't have any movies in your list, try searching for some!"
+    
+        //If it doesn't, create the record
+        if (!dbMovie){
+            const response = await tmdb.get(`movie/${req.body.movie.tmdb_id}`, {
+                params: {
+                    api_key: process.env.TMDB_KEY,
+                    movie_id: req.body.movie.tmdb_id,
+                    language: "en-US",
+                    append_to_response: "credits"
+                }
+            }).catch(err => {
+                console.log("Woops")
             })
-        })
-    } else {
-        //If it does, re-direct and don't call API
-        console.log("logged");
-        res.redirect(`/movies/${dbMovie._id}`)
+    
+            Movie.create({
+                backdrop_path: response.data.backdrop_path,
+                budget: response.data.budget,
+                cast: response.data.credits.cast,
+                crew: response.data.credits.crew,
+                genres: response.data.genres,
+                overview: response.data.overview,
+                poster_path: response.data.poster_path,
+                production_companies: response.data.production_companies,
+                release_date: response.data.release_date,
+                runtime: response.data.runtime,
+                status: response.data.status,
+                tagline: response.data.tagline,
+                title: response.data.title,
+                tmdb_id: response.data.id
+            })
+            .then( movie => {
+                req.flash("success", "Movie entered successfully");
+                res.redirect(`/movies/${movie._id}`)
+            })
+            .catch( err => {
+                req.flash("error", `ERROR: ${err}`);
+                res.render("pages/error", {
+                    message: "It looks like you don't have any movies in your list, try searching for some!"
+                })
+            })
+        } else {
+            //If it does, re-direct and don't call API
+            res.redirect(`/movies/${dbMovie._id}`)
+        }
     }
 };
 
@@ -117,31 +122,6 @@ exports.edit = (req, res) => {
             res.redirect("/movies");
         });
 }
-
-// exports.index = (req, res) => {
-//     req.isAuthenticated();
-
-//     Movie.find({
-//         user: req.session.userId
-//     })
-//         .then(movies => {
-//             if(movies.length === 0){
-//                 res.render("pages/error", {
-//                     message: "It looks like you don't have any movies in your list, try searching for some!"
-//                 })
-//             }else {
-//                 res.render("movies/index", {
-//                     movies: movies,
-//                     title: "Movie List",
-//                     path: req.path
-//                 })
-//             }
-//         })
-//         .catch(err => {
-//             req.flash("error", `ERROR: ${err}`);
-//             res.redirect("/movies");
-//         });
-// };
 
 exports.show = (req, res) => {
     const movie = Movie.findById(req.params.id).then(movie => movie)
@@ -185,17 +165,12 @@ exports.show = (req, res) => {
         const genres = genreFormatter.formatGenres(movie.genres);
         movie.genres = genres;
 
-        // //Generate Toast messages if needed
-        // if(req.session.toast === "remove"){
-        //     req.toastr.info("Movie was removed from list", "Success");
-        // }
-
         res.render("movies/show", {
             movie: movie,
             user: user
         })
     })
-    .catch( err => {
+    .catch( () => {
         res.render("pages/error", {
             message: "Your watch list is empty, try searching for some movies to populate it with"
         });
@@ -209,8 +184,6 @@ exports.update = (req, res) => {
         _id: req.body.movie.id
     },{
         on_watchlist: req.body.movie.on_watchlist
-        // on_favourite_list: req.body.movie.on_favourite_list,
-        // rating: req.body.movie.rating
     },{
         runValidators: true
     })

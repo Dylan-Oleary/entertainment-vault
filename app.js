@@ -62,12 +62,13 @@ const isAuthenticated = (req) => {
 app.use((req, res, next) => {
     req.isAuthenticated = () => {
         if (!isAuthenticated(req)) {
-            req.flash('error', "You are not permitted to do this action")
             res.redirect("/");
         }
     }
 
     res.locals.isAuthenticated = isAuthenticated(req);
+    res.locals.sessionUserName = req.session.userName;
+    
     next();
 })
 

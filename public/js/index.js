@@ -1,4 +1,21 @@
 $(document).ready(function(){
+    //Account Tab Init
+    $('.tabular.menu .item').tab();
+    //Load first tab
+    $('.tabular.menu .item').tab('change tab','profile');
+
+    //Init Modal
+    $('.ui.modal').modal();
+    //Bind Buttons to Modal
+    $(".modalToggle").click(() => {
+        $('.ui.modal').modal("toggle");
+    });
+
+    //Submit LogOut form
+    $("#Logout").click(() => {
+        $("#LogoutForm").submit();
+    });
+    
     $(".rating").rating("disable");
 
     //Disable user rating by default
@@ -49,4 +66,24 @@ $(document).ready(function(){
     })
 
     $('.ui.dropdown').dropdown();
+
+    $('#PasswordToggle').click(() => {
+        const passwordField = $('#PasswordField');
+
+        if(passwordField[0].type === "text"){
+            passwordField[0].type = "password";
+        } else {
+            passwordField[0].type = "text";
+        }
+    });
+
+    $('#ConfirmPasswordToggle').click(() => {
+        const confirmPasswordField = $('#ConfirmPasswordField');
+
+        if(confirmPasswordField[0].type === "text"){
+            confirmPasswordField[0].type = "password";
+        } else {
+            confirmPasswordField[0].type = "text";
+        }
+    });
 });

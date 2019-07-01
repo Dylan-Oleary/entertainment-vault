@@ -1,0 +1,21 @@
+mixin editUser(user)
+    #EditUserForm
+        form.ui.form(action="/users/update", method="POST")
+            input(type="hidden", name="user[id]", value=user.id)
+
+            .field
+                .two.fields
+                    .field
+                        label First Name
+                        input(name="user[firstName]", required, value=user.firstName)
+                    .field
+                        label Last Name
+                        input(name="user[lastName]", required, value=user.lastName)
+            .field
+                .two.fields
+                    .field
+                        label E-mail
+                        input(name="user[email]", required, value=user.email)
+            .actions
+                button.ui.button(type="submit") Update Profile
+                    

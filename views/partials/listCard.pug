@@ -7,7 +7,10 @@ mixin listCard(movie)
     
     #ListViewCard
         .list-view-image-container.blur
-            img.ui.fluid.image(src=poster)
+            if movie.poster_path
+                img.ui.fluid.image(src=poster)
+            else 
+                img.ui.fluid.image(src="/images/case-white.svg")
             #CardModal
                 form(action=(`/movies`), method="POST")
                     if movie._id
