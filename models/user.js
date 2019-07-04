@@ -32,6 +32,17 @@ const UserSchema = new mongoose.Schema(
         },
         ratedList: {
             type: Array
+        },
+        profilePicture: {
+            contentType: {
+                type: String,
+                enum: ["image/jpeg", "image/png", null]
+            },
+            size: {
+                type: Number,
+                max: 1000000
+            },
+            data: Buffer
         }
     },
     {

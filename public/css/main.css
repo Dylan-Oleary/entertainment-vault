@@ -400,10 +400,8 @@ i.big.icon {
     justify-content: flex-end;
 }
 
-.ui.modal 
-
 #RegisterForm .inline-form-field, #LoginForm .inline-form-field{
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
 }
 
@@ -459,7 +457,9 @@ i.big.icon {
 
 #AccountForm {
     display: flex;
-    margin: 20px 0;
+    flex-direction: column;
+    margin: 20px auto;
+    width: 600px;
 }
 
 #AccountContainer {
@@ -471,20 +471,27 @@ i.big.icon {
     margin-bottom: 40px;
 }
 
-.account-information {
-    flex-grow: 1;
-    margin-left: 200px;
-    display: flex;
-    flex-direction: column;
-}
-
 .account-information .ui.bottom.attached.segment {
     flex-grow: 1;
+    height: 250px;
+}
+
+.avatar-image-container {
+    margin-bottom: 20px;
 }
 
 .avatar-image {
-    width: 250px;
-    margin-bottom: 20px;
+    vertical-align: middle;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+}
+
+.avatar-image-small {
+    vertical-align: middle;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
 }
 
 #TabContent {
@@ -496,3 +503,74 @@ i.big.icon {
     color: #F6F4F3 !important;
 }
 
+#ProfilePictureForm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.form-avatar-image {
+    height: 200px;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.ui.top.attached.tabular.menu {
+    display: flex;
+    justify-content: center;
+}
+
+.ui.tab {
+    height: 100%;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-full-height {
+    height: 100%;
+}
+
+.avatar-small-container {
+    width: 200px;
+}
+
+.flex-one-middle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.flex-two-middle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    flex-wrap: wrap;
+}
+
+.flex-two-middle-row {
+    width: 50%;
+    margin-bottom: 40px;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.footnote {
+    font-size: 12px;
+    font-style: italic;
+    padding-top: 10px;
+    text-align: center;
+    margin: 0 !important;
+}
+
+.space-around {
+    justify-content: space-around;
+}

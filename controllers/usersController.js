@@ -1,27 +1,47 @@
 const User = require("../models/user");
 const Movie = require("../models/movie");
 const genreFormatter = require("../utils/genreFormatter");
+const dateFormatter = require("../utils/dateFormatter");
 const toastrConfig = require("../utils/toastrConfig");
+const fs = require('fs');
+const path = require("path");
 
 exports.account = async (req, res) => {
     await req.isAuthenticated();
 
     User.findById(req.session.userId)
-    .then( user => {
+    .then( async user => {
+        const profilePicture = user.profilePicture.data !== null ? new Buffer.from(user.profilePicture.data).toString("base64") : null
+
+        user.joinDate = dateFormatter.formatDate(new Date(user.createdAt));
+        user.lastUpdateDate = dateFormatter.formatDate(new Date(user.updatedAt));
+
         res.render("users/account", {
             title: "My Account",
-            user: user
+            user: user,
+            profilePicture: profilePicture
         })
     })
-
 }
 
 exports.create = (req, res) => {
-    User.create(req.body.user)
+    User.create({
+        firstName: req.body.user.firstName,
+        lastName: req.body.user.lastName,
+        email: req.body.user.email,
+        username: req.body.user.username,
+        password: req.body.user.password,
+        passwordConfirmation: req.body.user.passwordConfirmation,
+        profilePicture: {
+            contentType: null,
+            data: null
+        }
+    })
     .then(() => {
         res.redirect("/login");
     })
     .catch( err => {
+        console.log(err);
         res.redirect("users/new", {
             message: "It looks like you don't have any movies in your list, try searching for some!"
         })
@@ -53,16 +73,32 @@ exports.delete = async (req, res) => {
 exports.updateUser = async (req, res) => {
     await req.isAuthenticated();
 
+    const userUpdates = {};
+
+    if(req.body.user){
+        userUpdates.firstName = req.body.user.firstName;
+        userUpdates.lastName = req.body.user.lastName;
+        userUpdates.email = req.body.user.email;
+    }
+
+    if(req.file){
+        userUpdates.profilePicture = {
+            contentType : req.file.mimetype,
+            size: req.file.size,
+            data: fs.readFileSync(req.file.path)
+        }
+
+        fs.unlinkSync(req.file.path);
+    }
+    //Add if userUpdates has any properties, then update, if not, throw toastr!!! No point in writing nothing to the DB
     User.updateOne({
-        _id: req.body.user.id
+        _id: req.body.id
     },{
-        firstName: req.body.user.firstName,
-        lastName: req.body.user.lastName,
-        email: req.body.user.email
+        $set: userUpdates
     },{
         runValidators: true
     })
-    .then( () => {
+    .then( async () => {    
         req.toastr.success("Profile successfully updated", "Update successful!");
         res.redirect("/users/account");
     })

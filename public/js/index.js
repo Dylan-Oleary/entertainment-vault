@@ -86,4 +86,16 @@ $(document).ready(function(){
             confirmPasswordField[0].type = "text";
         }
     });
+
+
+    //Image Size and Format Client Side Verification
+    $("#ProfilePictureInput").change(() => {
+        const profilePicture = event.target.files[0];
+
+        if(profilePicture.size > 1000000 || (profilePicture.type !== "image/jpeg" && profilePicture.type !== "image/png")){
+            toastr.error("Images must be PNG, JPEG or JPG and must be less than 1MB in size","Woops!", {toastClass: "error"});
+            event.target.value = null;
+        }
+    })
+
 });

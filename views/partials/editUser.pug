@@ -1,7 +1,7 @@
 mixin editUser(user)
     #EditUserForm
         form.ui.form(action="/users/update", method="POST")
-            input(type="hidden", name="user[id]", value=user.id)
+            input(type="hidden", name="id", value=user.id)
 
             .field
                 .two.fields
@@ -12,10 +12,8 @@ mixin editUser(user)
                         label Last Name
                         input(name="user[lastName]", required, value=user.lastName)
             .field
-                .two.fields
-                    .field
-                        label E-mail
-                        input(name="user[email]", required, value=user.email)
+                label E-mail
+                input(name="user[email]", required, value=user.email)
             .actions
                 button.ui.button(type="submit") Update Profile
                     
